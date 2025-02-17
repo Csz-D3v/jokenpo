@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Jogo pedra papel e tesoura, pedra papel e tesoura, pedra papel tesoura">
+    <meta name="keywords" content="pedra papel e tesoura, pedra papel tesoura, jogo, game, jogo pedra papel e tesoura, jogo pedra papel tesoura, pedra papel tesoura jogo, pedra papel e tesoura jogo, game pedra papel tesoura, pedra papel tesoura game, game pedra papel e tesoura, pedra papel e tesoura game, jokenpo, jokenpô, jogo jokenpo, jogo jokenpô, game jokenpo, game jokenpô, jokenpô jogo, jokenpô game, jokenpo jogo, jokenpo game">
+    <meta name="author" content="Caio Souza">
+    <title>jokenpô</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0 2%;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0 10px 0;
+        }
+
+        h2 {
+            text-align: center;
+            margin: 10px 0 20px 0;
+        }
+
+        hr {
+            border: 2px solid #ccc; 
+            width: 70%;
+            max-width: 1280px;
+            margin: 0 auto 30px auto;
+        }
+
+        .align {
+            display: flex;
+        }
+
+        .player-option img, .enemy-option img {
+            max-width: 100px;
+            opacity: 0.3;
+            cursor: pointer;
+            margin-bottom: 35px;
+        }
+
+        .player-option, .player-enemy {
+            width: 100%;
+        }
+
+        @media (max-width: 500px) {
+            h1 {
+                font-size: 25px;
+            }
+
+            .player-option img, .enemy-option img {
+                max-width: 100px;
+                opacity: 0.3;
+                cursor: pointer;
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Pedra, Papel ou Tesouuuura!</h1>
+    <h2 class="vencedor"></h2>
+    <hr>
+
+    <div class="align">
+        <div class="player-option">
+            <div><img opt="Pedra" src="assets/rock.png" alt=""></div>
+            <div><img opt="Papel" src="assets/paper.png" alt=""></div>
+            <div><img opt="Tesoura" src="assets/scisor.png" alt=""></div>
+        </div>
+
+        <div class="enemy-option">
+            <div><img opt="Pedra" src="assets/rock.png" alt=""></div>
+            <div><img opt="Papel" src="assets/paper.png" alt=""></div>
+            <div><img opt="Tesoura" src="assets/scisor.png" alt=""></div>
+        </div>
+    </div>
+
+    <script>
+        var elementos = document.querySelectorAll('.player-option div > img');
+        var playerOpt = "";
+        var inimigoOpt = "";
+
+        function validarVitoria() {
+
+            let vencedor = document.querySelector('.vencedor');
+
+            if(playerOpt == "Papel") {
+                if(inimigoOpt == "Papel") {
+                    // Empate
+                    vencedor.innerHTML = 'O jogo foi empatado!';
+                    vencedor.style.color = "blue";
+                }else if(inimigoOpt == "Tesoura") {
+                    // Inimigo venceu
+                    vencedor.innerHTML = 'Você perdeu!';
+                    vencedor.style.color = "red";
+                }else if(inimigoOpt == "Pedra") {
+                    // Você venceu
+                    vencedor.innerHTML = 'Você venceu!';
+                    vencedor.style.color = "green";
+                }
+            }
+
+            if(playerOpt == "Pedra") {
+                if(inimigoOpt == "Papel") {
+                    // Inimigo venceu
+                    vencedor.innerHTML = 'Você perdeu!';
+                    vencedor.style.color = "red";
+                }else if(inimigoOpt == "Tesoura") {
+                    // Você venceu
+                    vencedor.innerHTML = 'Você venceu!';
+                    vencedor.style.color = "green";
+                }else if(inimigoOpt == "Pedra") {
+                    // Você venceu
+                    vencedor.innerHTML = 'O jogo foi empatado!';
+                    vencedor.style.color = "blue";
+                }
+            }
+
+            if(playerOpt == "Tesoura") {
+                if(inimigoOpt == "Papel") {
+                    // Você venceu
+                    vencedor.innerHTML = 'Você venceu!';
+                    vencedor.style.color = "green";
+                }else if(inimigoOpt == "Tesoura") {
+                    // Você venceu
+                    vencedor.innerHTML = 'O jogo foi empatado!';
+                    vencedor.style.color = "blue";
+                }else if(inimigoOpt == "Pedra") {
+                    // Você venceu
+                    vencedor.innerHTML = 'Você perdeu!';
+                    vencedor.style.color = "red";
+                }
+            }
+        };
+
+        function resetInimigo() {
+            const enemyOption = document.querySelectorAll('.enemy-option div');
+            for(var i = 0; i < enemyOption.length; i++) {
+                enemyOption[i].childNodes[0].style.opacity = 0.3; // childNodes retorna uma NodeList com todos os filhos de um elemento
+            }
+        }
+
+        function inimigoJogar(){
+            let rand = Math.floor(Math.random()*3);
+            /*
+            Math.random() → Gera um número decimal aleatório entre 0 e 1 (exemplo: 0.4532, 0.9999, etc.).
+            Multiplicado por 3 (Math.random() * 3) → Agora, o número aleatório estará entre 0 e quase 3 (exemplo: 0.6, 1.8, 2.9).
+            Math.floor() → Arredonda o número para baixo, removendo a parte decimal.
+
+            Se Math.random() gerar:
+
+            0.2 → 0.2 * 3 = 0.6 → Math.floor(0.6) = 0
+            0.9 → 0.9 * 3 = 2.7 → Math.floor(2.7) = 2
+            0.5 → 0.5 * 3 = 1.5 → Math.floor(1.5) = 1
+            Ou seja, rand pode ser 0, 1 ou 2.
+            */
+
+            const enemyOption = document.querySelectorAll('.enemy-option div');
+
+            resetInimigo();
+
+            for(var i = 0; i < enemyOption.length; i++) {
+                if(i == rand) {
+                    enemyOption[i].childNodes[0].style.opacity = 1; // childNodes retorna uma NodeList com todos os filhos de um elemento
+                    inimigoOpt = enemyOption[i].childNodes[0].getAttribute('opt');
+                }
+            }
+
+            validarVitoria();
+        }
+
+        function resetOpacityPlayer(){
+            for(var i = 0; i < elementos.length; i++){
+                elementos[i].style.opacity = 0.3;
+            }
+        }
+
+        for(var i = 0; i < elementos.length; i++){
+            elementos[i].addEventListener('click', function(t) {
+                resetOpacityPlayer(); // função criado acima /\ para apenas uma opção ficar com 100% visível a as demais opacas
+                t.target.style.opacity = 1; // usando target, ao clicar, ficará 100% visível
+                playerOpt = t.target.getAttribute('opt');
+
+                // alert(playerOpt);
+
+                inimigoJogar()
+            });
+        }
+    </script>
+
+</body>
+</html>
